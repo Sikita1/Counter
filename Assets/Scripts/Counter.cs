@@ -12,6 +12,7 @@ public class Counter : MonoBehaviour
     private int _currentValue = 0;
 
     private WaitForSeconds _wait;
+    private int _maxCountTimer = 9999;
 
     private void Start()
     {
@@ -42,7 +43,7 @@ public class Counter : MonoBehaviour
 
         if (_tumbler.Condition)
         {
-            for (int i = _currentValue; i < 9999; i++)
+            for (int i = _currentValue; i < _maxCountTimer; i++)
             {
                 _currentValue = i;
                 DisplayCountUp(_currentValue);
