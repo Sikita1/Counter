@@ -12,7 +12,6 @@ public class Counter : MonoBehaviour
     private int _currentValue = 0;
 
     private WaitForSeconds _wait;
-    private int _maxCountTimer = 9999;
 
     private void Start()
     {
@@ -21,38 +20,36 @@ public class Counter : MonoBehaviour
 
     private void OnEnable()
     {
-        _tumbler.Switching += StartTimer;
+        _tumbler.Switching += OnSwitchong;
     }
 
     private void OnDisable()
     {
-        _tumbler.Switching -= StartTimer;
+        _tumbler.Switching -= OnSwitchong;
     }
 
-    private void StartTimer()
+    private void OnSwitchong()
     {
-        if (_tumbler.Condition)
+        if (_tumbler.IsOn)
+        {
             _coroutine = StartCoroutine(CountUp());
+        }
         else
-            StopCoroutine(_coroutine);
+        {
+            if (_coroutine != null)
+                StopCoroutine(_coroutine);
+        }
     }
 
     private IEnumerator CountUp()
     {
         _wait = new WaitForSeconds(_delay);
 
-        if (_tumbler.Condition)
+        while (_tumbler.IsOn)
         {
-            for (int i = _currentValue; i < _maxCountTimer; i++)
-            {
-                _currentValue = i;
-                DisplayCountUp(_currentValue);
-                yield return _wait;
-            }
-        }
-        else
-        {
+            _currentValue++;
             DisplayCountUp(_currentValue);
+            yield return _wait;
         }
     }
 

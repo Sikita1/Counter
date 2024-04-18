@@ -1,44 +1,26 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
-using TMPro;
 
 public class Tumbler : MonoBehaviour
 {
-    [SerializeField] private TMP_Text _text;
+    public event Action Switching;
 
-    public event UnityAction Switching;
+    public bool IsOn { get; private set; }
 
-    public bool Condition { get; private set; } = false;
-
-    private string _on = "On";
-    private string _off = "Off";
-
-    private void Start()
+    private void Update()
     {
-        DisplayText();
-    }
-
-    public void Click()
-    {
-        Turn();
-        DisplayText();
-        Switching?.Invoke();
-        Debug.Log(Condition);
-    }
-
-    private void DisplayText()
-    {
-        if (Condition)
-            _text.text = _on;
-        else
-            _text.text = _off;
+        if (Input.GetMouseButtonDown(0))
+        {
+            Turn();
+            Switching?.Invoke();
+        }
     }
 
     private void Turn()
     {
-        if (Condition)
-            Condition = false;
+        if (IsOn)
+            IsOn = false;
         else
-            Condition = true;
+            IsOn = true;
     }
 }
